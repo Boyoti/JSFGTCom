@@ -1,0 +1,245 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/modele.xhtml">
+	<ui:define name="content">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">
+							#{msg['cat.titre']}<small> #{msg['cat.titre.desc']}</small>
+						</h1>
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-windows"></i>
+								#{msg['menu.home']} / #{msg['menu.cat']} /
+								#{msg['menu.cat.crud']}</li>
+						</ol>
+					</div>
+				</div>
+
+				<!-- Page Form -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-plus"></i> #{msg['cat.creation.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<!-- Formulaire D'ajout -->
+								<h:form id="addform">
+									<p:growl id="addmsg" showDetail="true" sticky="false" />
+									<div class="col-sm-9 col-centered">
+										<div class="row">
+											<div class="col-xs-8 col-sm-6">
+												<!-- Gauche -->
+												<div class="form-group">
+													<h:outputLabel for="codeCat" value="#{msg['cat.codeCat']}"
+														styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="codeCat" value="#{categorieBean.codeCat}"
+															styleClass="form-control" label="#{msg['cat.codeCat']}"
+															required="true" />
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-4 col-sm-6">
+												<!-- Droit -->
+												<div class="form-group">
+													<h:outputLabel for="libelleCat"
+														value="#{msg['cat.libelleCat']}" styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="libelleCat"
+															value="#{categorieBean.libelleCat}"
+															styleClass="form-control"
+															label="#{msg['cat.libelleCat']}" required="true" />
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- Boutons -->
+										<p:commandButton value="#{msg['bnt.submit']}"
+											action="#{categorieBean.addObject}"
+											update=":addform, :addform:addmsg, :viewform:catTab"
+											styleClass="addBtn addBtn-success pull-left" />
+
+										<p:commandButton value="#{msg['bnt.reset']}"
+											action="#{categorieBean.reset()}"
+											styleClass="addBtn addBtn-success pull-right"
+											update="addform" process="@this" />
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Table -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-list"></i> #{msg['cat.table.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-9 col-centered">
+										<!-- Partie Tableau et Dialog -->
+										<h:form id="viewform">
+											<p:growl id="viewmsg" showDetail="true" sticky="false" />
+
+											<!-- Block Tableau -->
+											<p:dataTable id="catTab" var="cat"
+												value="#{categorieBean.listCategorie}"
+												widgetVar="roleWidget" emptyMessage="#{msg['cat.tab.vide']}"
+												paginator="true" rows="5"
+												paginatorTemplate="{CurrentPageReport}
+										{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+												styleClass="dataTab catT" paginatorPosition="bottom"
+												tableStyle="width:auto" resizableColumns="true">
+
+												<!-- Exportation -->
+												<f:facet name="{Exporters}">
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/excel.png"
+															width="24" />
+														<p:dataExporter type="xls" target="catTab"
+															fileName="Categories" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/pdf.png"
+															width="24" />
+														<p:dataExporter type="pdf" target="catTab"
+															fileName="Categories" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/csv.png"
+															width="24" />
+														<p:dataExporter type="csv" target="catTab"
+															fileName="Categories" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/xml.png"
+															width="24" />
+														<p:dataExporter type="xml" target="catTab"
+															fileName="Categories" />
+													</h:commandLink>
+												</f:facet>
+												<!-- Fin Exportation -->
+
+												<p:column headerText="#{msg['cat.tab.col1']}">
+													<h:outputText value="#{cat.codeCat}" />
+												</p:column>
+
+												<p:column headerText="#{msg['cat.tab.col2']}">
+													<h:outputText value="#{cat.libelleCat}" />
+												</p:column>
+
+
+												<!-- VIEW -->
+												<p:column styleClass="viewCol" exportable="false">
+													<p:commandButton update=":viewform:catDetail"
+														oncomplete="PF('catDetDialog').show()"
+														title="#{msg['action.view']}"
+														icon="ui-icon ui-icon-plusthick">
+														<f:setPropertyActionListener value="#{cat}"
+															target="#{categorieBean.selectCategorie}" />
+													</p:commandButton>
+												</p:column>
+
+												<!-- EDIT -->
+												<p:column styleClass="editCol" exportable="false">
+													<p:commandButton update=":addform"
+														title="#{msg['action.edit']}"
+														action="#{categorieBean.editeObject}"
+														icon="ui-icon ui-icon-pencil">
+														<f:setPropertyActionListener value="#{cat}"
+															target="#{categorieBean.selectCategorie}" />
+													</p:commandButton>
+												</p:column>
+
+												<!-- DELETE -->
+												<p:column styleClass="deleteCol" exportable="false">
+													<p:commandButton oncomplete="PF('confirmDialog').show()"
+														title="#{msg['action.delete']}"
+														icon="ui-icon ui-icon-trash">
+														<f:setPropertyActionListener value="#{cat}"
+															target="#{categorieBean.selectCategorie}" />
+													</p:commandButton>
+												</p:column>
+
+											</p:dataTable>
+											<!-- Fin Block Tableau -->
+
+											<!-- Block Dialogs -->
+											<p:dialog styleClass="detailDialog"
+												header="#{msg['cat.dialog.info']}" widgetVar="catDetDialog"
+												modal="true" showEffect="fade" hideEffect="fade"
+												resizable="false">
+												<p:outputPanel id="catDetail" style="text-align:center;">
+													<p:panelGrid columns="2" style="margin:0 auto;">
+														<h:outputText value="#{msg['cat.codeCat']} :" />
+														<h:outputText
+															value="#{categorieBean.selectCategorie.codeCat}" />
+
+														<h:outputText value="#{msg['cat.libelleCat']} :" />
+														<h:outputText
+															value="#{categorieBean.selectCategorie.libelleCat}" />
+													</p:panelGrid>
+													<p:commandButton styleClass="btn btndetail"
+														value="#{msg['Ok']}" onclick="PF('catDetDialog').hide()"
+														type="button" />
+												</p:outputPanel>
+											</p:dialog>
+
+											<p:confirmDialog styleClass="confDialog"
+												message="#{msg['delete_confirm']}"
+												header="#{msg['Confirmation']}" widgetVar="confirmDialog">
+												<p:commandButton styleClass="btn pull-left"
+													value="#{msg['Oui']}" onclick="PF('confirmDialog').hide()"
+													update=":viewform:catTab, :viewform:viewmsg"
+													actionListener="#{categorieBean.deleteObject}" />
+												<p:commandButton styleClass="btn pull-right"
+													value="#{msg['Non']}" onclick="PF('confirmDialog').hide()"
+													type="button" />
+											</p:confirmDialog>
+											<!-- Fin Block Dialogs -->
+										</h:form>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Foot -->
+				<div class="row">
+					<div class="col-lg-12">
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-copyright"></i> <strong>NGISLa
+									Groupe</strong> - #{msg['all.right.name']} .... @#{msg['all.right']}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

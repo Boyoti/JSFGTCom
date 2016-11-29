@@ -1,0 +1,52 @@
+/* Global Login Styles */
+body {
+	margin-top: 100px;
+	background-color: #222;
+}
+
+@media ( min-width :768px) {
+	body {
+		margin-top: 50px;
+	}
+}
+
+#wrapper {
+	padding-left: 0;
+}
+
+/* Top Navigation */
+.top-nav {
+	padding: 0 15px;
+}
+
+.login-langue-form {
+	margin-top: 15px;
+}
+
+/* Login Form */
+.login-login-form {
+	margin-top: 30vh;
+	transform: translateY(-50%);
+	color: red;
+}
+
+div[id="formlog:msgslog_container"]>div {
+	margin-top: 5vh;
+	margin-right: -25px;
+	font-size: 15px;
+	background-color: red !important;
+}
+
+.login-login-form>h1 {
+	text-align: center;
+	color: white;
+}
+
+.outputlabel {
+	color: white;
+	font-size: large;
+}
+
+.clmSel {
+	width: 20px;
+}

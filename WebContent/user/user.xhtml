@@ -1,0 +1,290 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/modele.xhtml">
+	<ui:define name="content">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">
+							#{msg['user.titre']}<small> #{msg['user.titre.desc']}</small>
+						</h1>
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-windows"></i>
+								#{msg['menu.home']} / #{msg['menu.user']} /
+								#{msg['menu.user.crud']}</li>
+						</ol>
+					</div>
+				</div>
+
+				<!-- Page Form -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-plus"></i> #{msg['user.creation.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<!-- Formulaire D'ajout -->
+								<h:form id="addform">
+									<p:growl id="addmsg" showDetail="true" sticky="false" />
+									<div class="col-sm-9 col-centered">
+										<div class="row">
+											<div class="col-xs-8 col-sm-6">
+												<!-- Gauche -->
+												<div class="form-group">
+													<h:outputLabel for="nomUser" value="#{msg['user.nomUser']}"
+														styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="nomUser" value="#{userBean.nomUser}"
+															styleClass="form-control" label="#{msg['user.nomUser']}"
+															required="true" />
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-4 col-sm-6">
+												<!-- Droit -->
+												<div class="form-group">
+													<h:outputLabel for="prenomUser"
+														value="#{msg['user.prenomUser']}" styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="prenomUser"
+															value="#{userBean.prenomUser}" styleClass="form-control"
+															label="#{msg['user.prenomUser']}" required="true" />
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- Intermedi -->
+										<div class="form-group">
+											<h:outputLabel for="login" value="#{msg['user.login']}"
+												styleClass="outputlabel" />
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-sun-o"></i></span>
+												<h:inputText id="login" value="#{userBean.login}"
+													styleClass="form-control" label="#{msg['user.login']}"
+													required="true" />
+											</div>
+										</div>
+										<!-- Fin Intermedi -->
+										<div class="row">
+											<div class="col-xs-8 col-sm-6">
+												<!-- Gauche -->
+												<div class="form-group">
+													<h:outputLabel for="password1"
+														value="#{msg['user.password1']}" styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<p:password id="password1" value="#{userBean.password}"
+															match="password2" label="#{msg['user.password1']}"
+															styleClass="form-control" required="true" disabled="#{userBean.test}"/>
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-4 col-sm-6">
+												<!-- Droit -->
+												<div class="form-group">
+													<h:outputLabel for="password2"
+														value="#{msg['user.password2']}" styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<p:password id="password2" value="#{userBean.password}"
+															label="#{msg['user.password2']}"
+															styleClass="form-control" required="true" disabled="#{userBean.test}"/>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- Boutons -->
+										<p:commandButton value="#{msg['bnt.submit']}"
+											action="#{userBean.addObject}"
+											update=":addform, :addform:addmsg, :viewform:userTab"
+											styleClass="addBtn addBtn-success pull-left" />
+
+										<p:commandButton value="#{msg['bnt.reset']}"
+											action="#{userBean.reset()}"
+											styleClass="addBtn addBtn-success pull-right"
+											update="addform" process="@this" />
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Table -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-list"></i> #{msg['user.table.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-9 col-centered">
+										<!-- Partie Tableau et Dialog -->
+										<h:form id="viewform">
+											<p:growl id="viewmsg" showDetail="true" sticky="false" />
+
+											<!-- Block Tableau -->
+											<p:dataTable id="userTab" var="user"
+												value="#{userBean.listUser}" widgetVar="roleWidget"
+												emptyMessage="#{msg['user.tab.vide']}" paginator="true"
+												rows="5"
+												paginatorTemplate="{CurrentPageReport}
+										{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+												styleClass="dataTab userT" paginatorPosition="bottom"
+												tableStyle="width:auto" resizableColumns="true">
+
+												<!-- Exportation -->
+												<f:facet name="{Exporters}">
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/excel.png"
+															width="24" />
+														<p:dataExporter type="xls" target="userTab"
+															fileName="Users" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/pdf.png"
+															width="24" />
+														<p:dataExporter type="pdf" target="userTab"
+															fileName="Users" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/csv.png"
+															width="24" />
+														<p:dataExporter type="csv" target="userTab"
+															fileName="Users" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/xml.png"
+															width="24" />
+														<p:dataExporter type="xml" target="userTab"
+															fileName="Users" />
+													</h:commandLink>
+												</f:facet>
+												<!-- Fin Exportation -->
+
+												<p:column headerText="#{msg['user.tab.col1']}">
+													<h:outputText value="#{user.nomUser}" />
+												</p:column>
+
+												<p:column headerText="#{msg['user.tab.col2']}">
+													<h:outputText value="#{user.prenomUser}" />
+												</p:column>
+
+												<p:column headerText="#{msg['user.tab.col3']}">
+													<h:outputText value="#{user.login}" />
+												</p:column>
+
+												<!-- VIEW -->
+												<p:column styleClass="viewCol" exportable="false">
+													<p:commandButton update=":viewform:userDetail"
+														oncomplete="PF('userDetDialog').show()"
+														title="#{msg['action.view']}"
+														icon="ui-icon ui-icon-plusthick">
+														<f:setPropertyActionListener value="#{user}"
+															target="#{userBean.selectUser}" />
+													</p:commandButton>
+												</p:column>
+
+												<!-- EDIT -->
+												<p:column styleClass="editCol" exportable="false">
+													<p:commandButton update=":addform"
+														title="#{msg['action.edit']}"
+														action="#{userBean.editeObject}"
+														icon="ui-icon ui-icon-pencil">
+														<f:setPropertyActionListener value="#{user}"
+															target="#{userBean.selectUser}" />
+													</p:commandButton>
+												</p:column>
+
+												<!-- DELETE -->
+												<p:column styleClass="deleteCol" exportable="false">
+													<p:commandButton oncomplete="PF('confirmDialog').show()"
+														title="#{msg['action.delete']}"
+														icon="ui-icon ui-icon-trash">
+														<f:setPropertyActionListener value="#{user}"
+															target="#{userBean.selectUser}" />
+													</p:commandButton>
+												</p:column>
+
+											</p:dataTable>
+											<!-- Fin Block Tableau -->
+
+											<!-- Block Dialogs -->
+											<p:dialog styleClass="detailDialog"
+												header="#{msg['user.dialog.info']}"
+												widgetVar="userDetDialog" modal="true" showEffect="fade"
+												hideEffect="fade" resizable="false">
+												<p:outputPanel id="userDetail" style="text-align:center;">
+													<p:panelGrid columns="2" style="margin:0 auto;">
+														<h:outputText value="#{msg['user.nomUser']} :" />
+														<h:outputText value="#{userBean.selectUser.nomUser}" />
+
+														<h:outputText value="#{msg['user.prenomUser']} :" />
+														<h:outputText value="#{userBean.selectUser.prenomUser}" />
+
+														<h:outputText value="#{msg['user.login']} :" />
+														<h:outputText value="#{userBean.selectUser.login}" />
+													</p:panelGrid>
+													<p:commandButton styleClass="btn btndetail"
+														value="#{msg['Ok']}" onclick="PF('userDetDialog').hide()"
+														type="button" />
+												</p:outputPanel>
+											</p:dialog>
+
+											<p:confirmDialog styleClass="confDialog"
+												message="#{msg['delete_confirm']}"
+												header="#{msg['Confirmation']}" widgetVar="confirmDialog">
+												<p:commandButton styleClass="btn pull-left"
+													value="#{msg['Oui']}" onclick="PF('confirmDialog').hide()"
+													update=":viewform:userTab, :viewform:viewmsg"
+													actionListener="#{userBean.deleteObject}" />
+												<p:commandButton styleClass="btn pull-right"
+													value="#{msg['Non']}" onclick="PF('confirmDialog').hide()"
+													type="button" />
+											</p:confirmDialog>
+											<!-- Fin Block Dialogs -->
+										</h:form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Foot -->
+				<div class="row">
+					<div class="col-lg-12">
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-copyright"></i> <strong>NGISLa
+									Groupe</strong> - #{msg['all.right.name']} .... @#{msg['all.right']}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

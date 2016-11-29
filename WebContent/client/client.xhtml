@@ -1,0 +1,279 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/modele.xhtml">
+	<ui:define name="content">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">
+							#{msg['client.titre']}<small> #{msg['client.titre.desc']}</small>
+						</h1>
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-windows"></i>
+								#{msg['menu.home']} / #{msg['menu.client']} /
+								#{msg['menu.client.crud']}</li>
+						</ol>
+					</div>
+				</div>
+
+				<!-- Page Form -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-plus"></i> #{msg['client.creation.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<!-- Formulaire D'ajout -->
+								<h:form id="addform">
+									<p:growl id="addmsg" showDetail="true" sticky="false" />
+									<div class="col-sm-9 col-centered">
+										<div class="row">
+											<div class="col-xs-8 col-sm-6">
+												<!-- Gauche -->
+												<div class="form-group">
+													<h:outputLabel for="nomCli" value="#{msg['client.nomCli']}"
+														styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="nomCli" value="#{clientBean.nomCli}"
+															styleClass="form-control" label="#{msg['client.nomCli']}"
+															required="true" />
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<h:outputLabel for="adresseCli" value="#{msg['client.adresseCli']}"
+														styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="adresseCli" value="#{clientBean.adresseCli}"
+															styleClass="form-control" label="#{msg['client.adresseCli']}"
+															required="true" />
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-4 col-sm-6">
+												<!-- Droit -->
+												<div class="form-group">
+													<h:outputLabel for="prenomCli"
+														value="#{msg['client.prenomCli']}" styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="prenomCli"
+															value="#{clientBean.prenomCli}" styleClass="form-control"
+															label="#{msg['client.prenomCli']}" required="true" />
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<h:outputLabel for="telCli"
+														value="#{msg['client.telCli']}" styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="telCli"
+															value="#{clientBean.telCli}" styleClass="form-control"
+															label="#{msg['client.telCli']}" required="true" />
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<!-- Boutons -->
+										<p:commandButton value="#{msg['bnt.submit']}"
+											action="#{clientBean.addObject}"
+											update=":addform, :addform:addmsg, :viewform:clientTab"
+											styleClass="addBtn addBtn-success pull-left" />
+
+										<p:commandButton value="#{msg['bnt.reset']}"
+											action="#{clientBean.reset()}"
+											styleClass="addBtn addBtn-success pull-right"
+											update="addform" process="@this" />
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Table -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-list"></i> #{msg['client.table.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-9 col-centered">
+										<!-- Partie Tableau et Dialog -->
+										<h:form id="viewform">
+											<p:growl id="viewmsg" showDetail="true" sticky="false" />
+
+											<!-- Block Tableau -->
+											<p:dataTable id="clientTab" var="client"
+												value="#{clientBean.listClient}" widgetVar="roleWidget"
+												emptyMessage="#{msg['client.tab.vide']}" paginator="true"
+												rows="5"
+												paginatorTemplate="{CurrentPageReport}
+										{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+												styleClass="dataTab clientT" paginatorPosition="bottom"
+												tableStyle="width:auto" resizableColumns="true">
+
+												<!-- Exportation -->
+												<f:facet name="{Exporters}">
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/excel.png"
+															width="24" />
+														<p:dataExporter type="xls" target="clientTab"
+															fileName="Clients" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/pdf.png"
+															width="24" />
+														<p:dataExporter type="pdf" target="clientTab"
+															fileName="Clients" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/csv.png"
+															width="24" />
+														<p:dataExporter type="csv" target="clientTab"
+															fileName="Clients" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/xml.png"
+															width="24" />
+														<p:dataExporter type="xml" target="clientTab"
+															fileName="Clients" />
+													</h:commandLink>
+												</f:facet>
+												<!-- Fin Exportation -->   
+
+												<p:column headerText="#{msg['client.tab.col1']}">
+													<h:outputText value="#{client.nomCli}" />
+												</p:column>
+
+												<p:column headerText="#{msg['client.tab.col2']}">
+													<h:outputText value="#{client.prenomCli}" />
+												</p:column>
+
+												<p:column headerText="#{msg['client.tab.col3']}">
+													<h:outputText value="#{client.adresseCli}" />
+												</p:column>
+												
+												<p:column headerText="#{msg['client.tab.col4']}">
+													<h:outputText value="#{client.telCli}" />
+												</p:column>
+												
+												<!-- VIEW -->
+												<p:column styleClass="viewCol" exportable="false">
+													<p:commandButton update=":viewform:clientDetail"
+														oncomplete="PF('clientDetDialog').show()"
+														title="#{msg['action.view']}"
+														icon="ui-icon ui-icon-plusthick">
+														<f:setPropertyActionListener value="#{client}"
+															target="#{clientBean.selectClient}" />
+													</p:commandButton>
+												</p:column>
+
+												<!-- EDIT -->
+												<p:column styleClass="editCol" exportable="false">
+													<p:commandButton update=":addform"
+														title="#{msg['action.edit']}"
+														action="#{clientBean.editeObject}"
+														icon="ui-icon ui-icon-pencil">
+														<f:setPropertyActionListener value="#{client}"
+															target="#{clientBean.selectClient}" />
+													</p:commandButton>
+												</p:column>
+
+												<!-- DELETE -->
+												<p:column styleClass="deleteCol" exportable="false">
+													<p:commandButton oncomplete="PF('confirmDialog').show()"
+														title="#{msg['action.delete']}"
+														icon="ui-icon ui-icon-trash">
+														<f:setPropertyActionListener value="#{client}"
+															target="#{clientBean.selectClient}" />
+													</p:commandButton>
+												</p:column>
+
+											</p:dataTable>
+											<!-- Fin Block Tableau -->   
+
+											<!-- Block Dialogs -->
+											<p:dialog styleClass="detailDialog"
+												header="#{msg['client.dialog.info']}"
+												widgetVar="clientDetDialog" modal="true" showEffect="fade"
+												hideEffect="fade" resizable="false">
+												<p:outputPanel id="clientDetail" style="text-align:center;">
+													<p:panelGrid columns="2" style="margin:0 auto;">
+														<h:outputText value="#{msg['client.nomCli']} :" />
+														<h:outputText value="#{clientBean.selectClient.nomCli}" />
+
+														<h:outputText value="#{msg['client.prenomCli']} :" />
+														<h:outputText value="#{clientBean.selectClient.prenomCli}" />
+
+														<h:outputText value="#{msg['client.adresseCli']} :" />
+														<h:outputText value="#{clientBean.selectClient.adresseCli}" />
+														
+														<h:outputText value="#{msg['client.telCli']} :" />
+														<h:outputText value="#{clientBean.selectClient.telCli}" />
+													</p:panelGrid>
+													<p:commandButton styleClass="btn btndetail"
+														value="#{msg['Ok']}" onclick="PF('clientDetDialog').hide()"
+														type="button" />
+												</p:outputPanel>
+											</p:dialog>
+
+											<p:confirmDialog styleClass="confDialog"
+												message="#{msg['delete_confirm']}"
+												header="#{msg['Confirmation']}" widgetVar="confirmDialog">
+												<p:commandButton styleClass="btn pull-left"
+													value="#{msg['Oui']}" onclick="PF('confirmDialog').hide()"
+													update=":viewform:clientTab, :viewform:viewmsg"
+													actionListener="#{clientBean.deleteObject}" />
+												<p:commandButton styleClass="btn pull-right"
+													value="#{msg['Non']}" onclick="PF('confirmDialog').hide()"
+													type="button" />
+											</p:confirmDialog>
+											<!-- Fin Block Dialogs -->
+										</h:form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Foot -->
+				<div class="row">
+					<div class="col-lg-12">
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-copyright"></i> <strong>NGISLa
+									Groupe</strong> - #{msg['all.right.name']} .... @#{msg['all.right']}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

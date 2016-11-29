@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/modele.xhtml">
+	<ui:define name="content">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">
+							#{msg['etat.titre']}<small> #{msg['etat.titre.desc']}</small>
+						</h1>
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-windows"></i>
+								#{msg['menu.home']} / #{msg['menu.stat']} /
+								#{msg['menu.stat.nbprcat.1']}</li>
+						</ol>
+					</div>
+				</div>
+
+				<!-- Page Form -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-plus"></i> #{msg['etat.prod']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<!-- Formulaire D'ajout -->
+								<div class="col-sm-9 col-centered">
+									<div class="row">
+										
+										<div class="col-xs-8 col-sm-6" style="text-align: center;">
+											<!-- Gauche -->
+										</div>
+										<div class="col-xs-4 col-sm-6" style="text-align: center;">
+											<!-- Droit -->
+										</div>
+									</div>
+									<!-- Intermediaire -->
+									<p:chart type="bar" model="#{statistiqueBean.statActu}" />
+									<p:chart type="bar" model="#{statistiqueBean.statEnSrt}" />
+									<!-- Fin Intermediaire -->
+									<div class="row">
+										
+										<div class="col-xs-8 col-sm-6" style="text-align: center;">
+											<!-- Gauche -->
+										</div>
+										<div class="col-xs-4 col-sm-6" style="text-align: center;">
+											<!-- Droit -->
+										</div>
+									</div>
+									<!-- Boutons -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Table -->
+				<div class="row"></div>
+
+				<!-- Page Foot -->
+				<div class="row">
+					<div class="col-lg-12">
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-copyright"></i> <strong>NGISLa
+									Groupe</strong> - #{msg['all.right.name']} .... @#{msg['all.right']}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

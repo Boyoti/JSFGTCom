@@ -1,0 +1,128 @@
+.roleT td:nth-child(1) {
+	width: 2000px;
+}
+
+.catT td:nth-child(1), .catT td:nth-child(2) {
+	width: 450px;
+}
+
+.userT td:nth-child(1), .userT td:nth-child(2), .userT td:nth-child(3) {
+	width: 700px;
+}
+
+.clientT td:nth-child(1), .clientT td:nth-child(2), .clientT td:nth-child(3),
+	.clientT td:nth-child(4) {
+	width: 800px;
+}
+
+.produitT td:nth-child(1), .produitT td:nth-child(2), .produitT td:nth-child(3),
+	.produitT td:nth-child(4), .produitT td:nth-child(5) {
+	width: 800px;
+}
+
+.achatDialog {
+	margin-left: 100px;
+}
+
+.panierSty {
+	margin-left: 62px;
+}
+
+.dataTab {
+	font-size: 13px;
+}
+
+.dataTab tr:hover {
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+.col-centered {
+	float: none;
+	margin: 0 auto;
+}
+
+.btndetail {
+	margin-top: 10px;
+}
+
+.detailDialog {
+	font-style: normal;
+	font-weight: normal;
+	margin-left: 110px;
+	font-size: 13px;
+}
+
+.confDialog {
+	font-style: normal;
+	font-weight: normal;
+	margin-left: 110px;
+	font-size: 13px;
+}
+
+.outputlabel {
+	/* 	margin-right: 5px; */
+	font-style: normal;
+	font-weight: normal;
+}
+
+.addBtn {
+	display: inline-block;
+	padding: 4px 4px;
+	/* 	margin-left: 5px; */
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+.addBtn-success {
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+}
+
+.breadcrumbPerso {
+	padding: 8px 15px;
+	margin-bottom: 20px;
+	list-style: none;
+	border-radius: 4px;
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+div[id="addform:addmsg_container"]>div {
+	margin-top: 31px;
+	margin-right: -20px;
+	font-size: 15px;
+	background-color: aqua;
+}
+
+div[id="viewform:viewmsg_container"]>div {
+	margin-top: 31px;
+	margin-right: -20px;
+	font-size: 15px;
+	background-color: aqua;
+}
+
+div[id="detailEntre:anulmsg_container"]>div {
+	margin-top: 31px;
+	margin-right: -20px;
+	font-size: 15px;
+	background-color: aqua;
+}

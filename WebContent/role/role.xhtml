@@ -1,0 +1,223 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/modele.xhtml">
+	<ui:define name="content">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">
+							#{msg['role.titre']}<small> #{msg['role.titre.desc']}</small>
+						</h1>
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-windows"></i>
+								#{msg['menu.home']} / #{msg['menu.role']} /
+								#{msg['menu.role.crud']}</li>
+						</ol>
+					</div>
+				</div>
+
+				<!-- Page Form -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-plus"></i> #{msg['role.creation.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<!-- Formulaire D'ajout -->
+								<h:form id="addform">
+									<p:growl id="addmsg" showDetail="true" sticky="false" />
+									<div class="col-sm-9 col-centered">
+										<div class="row">
+											<div class="col-xs-8 col-sm-6">
+												<!-- Gauche -->
+											</div>
+											<div class="col-xs-4 col-sm-6">
+												<!-- Droit -->
+											</div>
+										</div>
+										<!-- Boutons -->
+										<div class="form-group">
+											<h:outputLabel for="nomRole" value="#{msg['role.nomRole']}"
+												styleClass="outputlabel" />
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-sun-o"></i></span>
+												<h:inputText id="nomRole" value="#{roleBean.nomRole}"
+													styleClass="form-control" label="#{msg['role.nomRole']}"
+													required="true" />
+											</div>
+										</div>
+										<p:commandButton value="#{msg['bnt.submit']}"
+											action="#{roleBean.addObject}"
+											update=":addform, :addform:addmsg, :viewform:roleTab"
+											styleClass="addBtn addBtn-success pull-left" />
+
+										<p:commandButton value="#{msg['bnt.reset']}"
+											action="#{roleBean.reset()}"
+											styleClass="addBtn addBtn-success pull-right"
+											update="addform" process="@this" />
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Table -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-list"></i> #{msg['role.table.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-9 col-centered">
+										<!-- Partie Tableau et Dialog -->
+										<h:form id="viewform">
+											<p:growl id="viewmsg" showDetail="true" sticky="false" />
+
+											<!-- Block Tableau -->
+											<p:dataTable id="roleTab" var="role"
+												value="#{roleBean.listRole}" widgetVar="roleWidget"
+												emptyMessage="#{msg['role.tab.vide']}" paginator="true"
+												rows="5"
+												paginatorTemplate="{CurrentPageReport}
+										{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+												styleClass="dataTab roleT" paginatorPosition="bottom"
+												tableStyle="width:auto" resizableColumns="true">
+
+												<!-- Exportation -->
+												<f:facet name="{Exporters}">
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/excel.png"
+															width="24" />
+														<p:dataExporter type="xls" target="roleTab"
+															fileName="Roles" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/pdf.png"
+															width="24" />
+														<p:dataExporter type="pdf" target="roleTab"
+															fileName="Roles" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/csv.png"
+															width="24" />
+														<p:dataExporter type="csv" target="roleTab"
+															fileName="Roles" />
+													</h:commandLink>
+
+													<h:commandLink>
+														<p:graphicImage name="../resources/images/xml.png"
+															width="24" />
+														<p:dataExporter type="xml" target="roleTab"
+															fileName="Roles" />
+													</h:commandLink>
+												</f:facet>
+												<!-- Fin Exportation -->
+
+												<p:column headerText="#{msg['role.tab.col1']}">
+													<h:outputText value="#{role.nomRole}" />
+												</p:column>
+
+												<!-- VIEW -->
+												<p:column styleClass="viewCol" exportable="false">
+													<p:commandButton update=":viewform:roleDetail"
+														oncomplete="PF('roleDetDialog').show()"
+														title="#{msg['action.view']}"
+														icon="ui-icon ui-icon-plusthick">
+														<f:setPropertyActionListener value="#{role}"
+															target="#{roleBean.selectRole}" />
+													</p:commandButton>
+												</p:column>
+
+												<!-- EDIT -->
+												<p:column styleClass="editCol" exportable="false">
+													<p:commandButton update=":addform"
+														title="#{msg['action.edit']}"
+														action="#{roleBean.editeObject}"
+														icon="ui-icon ui-icon-pencil">
+														<f:setPropertyActionListener value="#{role}"
+															target="#{roleBean.selectRole}" />
+													</p:commandButton>
+												</p:column>
+
+												<!-- DELETE -->
+												<p:column styleClass="deleteCol" exportable="false">
+													<p:commandButton oncomplete="PF('confirmDialog').show()"
+														title="#{msg['action.delete']}"
+														icon="ui-icon ui-icon-trash">
+														<f:setPropertyActionListener value="#{role}"
+															target="#{roleBean.selectRole}" />
+													</p:commandButton>
+												</p:column>
+
+											</p:dataTable>
+											<!-- Fin Block Tableau -->
+
+											<!-- Block Dialogs -->
+											<p:dialog styleClass="detailDialog"
+												header="#{msg['role.dialog.info']}"
+												widgetVar="roleDetDialog" modal="true" showEffect="fade"
+												hideEffect="fade" resizable="false">
+												<p:outputPanel id="roleDetail" style="text-align:center;">
+													<p:panelGrid columns="2" style="margin:0 auto;">
+														<h:outputText value="#{msg['role.nomRole']} :" />
+														<h:outputText value="#{roleBean.selectRole.nomRole}" />
+													</p:panelGrid>
+													<p:commandButton styleClass="btn btndetail"
+														value="#{msg['Ok']}" onclick="PF('roleDetDialog').hide()"
+														type="button" />
+												</p:outputPanel>
+											</p:dialog>
+
+											<p:confirmDialog styleClass="confDialog"
+												message="#{msg['delete_confirm']}"
+												header="#{msg['Confirmation']}" widgetVar="confirmDialog">
+												<p:commandButton styleClass="btn pull-left"
+													value="#{msg['Oui']}" onclick="PF('confirmDialog').hide()"
+													update=":viewform:roleTab, :viewform:viewmsg"
+													actionListener="#{roleBean.deleteObject}" />
+												<p:commandButton styleClass="btn pull-right"
+													value="#{msg['Non']}" onclick="PF('confirmDialog').hide()"
+													type="button" />
+											</p:confirmDialog>
+											<!-- Fin Block Dialogs -->
+										</h:form>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Foot -->
+				<div class="row">
+					<div class="col-lg-12">
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-copyright"></i> <strong>NGISLa
+									Groupe</strong> - #{msg['all.right.name']} .... @#{msg['all.right']}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

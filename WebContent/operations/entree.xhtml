@@ -1,0 +1,183 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/modele.xhtml">
+	<ui:define name="content">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">
+							#{msg['stock.titre']}<small> #{msg['stock.titre.desc']}</small>
+						</h1>
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-windows"></i>
+								#{msg['menu.home']} / #{msg['menu.stock']} /
+								#{msg['menu.stock.entree']}</li>
+						</ol>
+					</div>
+				</div>
+
+				<!-- Page Form -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-plus"></i> #{msg['stock.creation.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<!-- Formulaire D'ajout -->
+								<h:form id="addform">
+									<p:growl id="addmsg" showDetail="true" sticky="false" />
+									<div class="col-sm-9 col-centered">
+										<div class="row">
+											<div class="col-xs-8 col-sm-6">
+												<!-- Gauche -->
+												<div class="form-group">
+													<h:outputLabel for="selectProduit"
+														value="#{msg['stock.list.produits']}"
+														styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:selectOneMenu id="selectProduit"
+															label="#{msg['stock.tab.col1']}"
+															styleClass="form-control"
+															value="#{entreeBean.selectProduit}" var="selecProd"
+															converter="prodConverter" effect="fade" filter="true"
+															filterMatchMode="startsWith" required="false">
+
+															<f:selectItems value="#{entreeBean.lisPro}"
+																var="listProd" itemLabel="#{listProd.libelleProd}"
+																itemValue="#{listProd}" />
+															<p:column>
+																<h:outputText value="#{selectProduit.libelleProd}" />
+															</p:column>
+														</h:selectOneMenu>
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-4 col-sm-6">
+												<!-- Droit -->
+												<div class="form-group">
+													<h:outputLabel for="qteAjoute"
+														value="#{msg['stock.qte.entree']}"
+														styleClass="outputlabel" />
+													<div class="input-group">
+														<span class="input-group-addon"><i
+															class="fa fa-sun-o"></i></span>
+														<h:inputText id="qteAjoute"
+															value="#{entreeBean.qteAjoute}" styleClass="form-control"
+															label="#{msg['stock.qte.entree']}" required="true" />
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- Intermediaire -->
+										<p:commandButton value="#{msg['bnt.submit']}"
+											action="#{entreeBean.entreeProduit}"
+											update=":addform, :addform:addmsg, :detailEntre:viewform"
+											styleClass="addBtn addBtn-success pull-left" />
+
+										<p:commandButton value="#{msg['bnt.reset']}"
+											action="#{entreeBean.reset()}"
+											styleClass="addBtn addBtn-success pull-right"
+											update="addform" process="@this" />
+
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Table -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-list"></i> #{msg['stock.table.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-9 col-centered">
+										<!-- Partie Tableau et Dialog -->
+										<p:accordionPanel id="detailEntre" activeIndex="null">
+											<p:tab title="#{msg['stock.detail']}">
+												<p:growl id="anulmsg" showDetail="true" sticky="false" />
+												<h:form id="viewform">
+													<div class="col-sm-9 col-centered" id="viewPro">
+														<div class="row">
+															<div class="col-xs-8 col-sm-6">
+																<!-- Gauche -->
+																<div class="form-group">
+																	<h:outputText value="#{msg['stock.tab.col1']}" />
+																</div>
+																<div class="form-group">
+																	<h:outputText value="#{msg['stock.tab.col2']}" />
+																</div>
+																<div class="form-group">
+																	<h:outputText value="#{msg['stock.tab.col3']}" />
+																</div>
+																<div class="form-group">
+																	<h:outputText value="#{msg['stock.tab.col4']}" />
+																</div>
+															</div>
+															<div class="col-xs-4 col-sm-6">
+																<!-- Droit -->
+																<div class="form-group">
+																	<h:outputText
+																		value="#{entreeBean.selectProduit.libelleProd}" />
+																</div>
+																<div class="form-group">
+																	<h:outputText value="#{entreeBean.qteInitia}" />
+																</div>
+																<div class="form-group">
+																	<h:outputText value="#{entreeBean.qteAjouteBack}" />
+																</div>
+																<div class="form-group">
+																	<h:outputText value="#{entreeBean.qteFinale}" />
+																</div>
+															</div>
+														</div>
+														<!-- Boutons -->
+														<p:commandButton value="#{msg['action.annul']}"
+															action="#{entreeBean.anullerEntree}"
+															update=":detailEntre:anulmsg"
+															disabled="#{entreeBean.testAn}"
+															title="#{msg['action.annul']}"
+															styleClass="btn btn-primary btn-lg btn-block" />
+													</div>
+												</h:form>
+											</p:tab>
+										</p:accordionPanel>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Foot -->
+				<div class="row">
+					<div class="col-lg-12">
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-copyright"></i> <strong>NGISLa
+									Groupe</strong> - #{msg['all.right.name']} .... @#{msg['all.right']}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

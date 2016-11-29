@@ -1,0 +1,224 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/modele.xhtml">
+	<ui:define name="content">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">
+							#{msg['stock.titre']}<small>
+								#{msg['stock.sortie.titre.desc']}</small>
+						</h1>
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-windows"></i>
+								#{msg['menu.home']} / #{msg['menu.stock']} /
+								#{msg['menu.stock.sortie']}</li>
+						</ol>
+					</div>
+				</div>
+
+				<!-- Page Form -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-plus"></i>
+									#{msg['stock.sortie.creation.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<!-- Formulaire D'ajout -->
+								<h:form id="addform">
+									<p:growl id="addmsg" showDetail="true" sticky="false" />
+									<div class="col-sm-9 col-centered">
+										<div class="row">
+											<div class="col-xs-8 col-sm-6">
+												<!-- Gauche -->
+											</div>
+											<div class="col-xs-4 col-sm-6">
+												<!-- Droit -->
+											</div>
+										</div>
+										<!-- Intermediaire -->
+										<div class="form-group">
+											<h:outputLabel for="selectClient"
+												value="#{msg['stock.sortie.list.client']}"
+												styleClass="outputlabel" />
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-sun-o"></i></span>
+												<h:selectOneMenu id="selectClient"
+													label="#{msg['stock.sortie.tab.col1']}"
+													styleClass="form-control"
+													value="#{entreeBean.selectClient}" var="selecCli"
+													converter="clientConverter" effect="fade" filter="true"
+													filterMatchMode="startsWith" required="false">
+													<f:selectItems value="#{entreeBean.lisCli}" var="listClie"
+														itemLabel="#{listClie.nomCli}" itemValue="#{listClie}" />
+													<p:column>
+														<h:outputText value="#{selectClient.nomCli}" />
+													</p:column>
+												</h:selectOneMenu>
+											</div>
+										</div>
+										<!-- Fin Intermediaire -->
+										<div class="row">
+											<div class="col-xs-8 col-sm-6">
+												<!-- Gauche -->
+												<div class="form-group">
+													<h:outputLabel for="prodNodeSelect"
+														value="#{msg['stock.list.produits']}"
+														styleClass="outputlabel" />
+													<p:tree id="prodNodeSelect" value="#{entreeBean.prodRoot}"
+														var="prodNode" selectionMode="single"
+														selection="#{entreeBean.prodNodeSelect}" draggable="true"
+														droppable="true" dragdropScope="demo">
+														<p:ajax event="dragdrop"
+															listener="#{entreeBean.onDragDrop}"
+															update=":addform:addmsg" />
+														<p:treeNode>
+															<h:outputText value="#{prodNode}" />
+														</p:treeNode>
+													</p:tree>
+												</div>
+											</div>
+											<div class="col-xs-4 col-sm-6">
+												<!-- Droit -->
+												<div class="form-group panierSty">
+													<h:outputLabel for="paniNodeSelect"
+														value="#{msg['stock.sortie.panier']}"
+														styleClass="outputlabel" />
+													<p:tree id="paniNodeSelect" value="#{entreeBean.paniRoot}"
+														var="prodNode" selectionMode="single"
+														selection="#{entreeBean.paniNodeSelect}" draggable="true"
+														droppable="true" dragdropScope="demo">
+														<p:ajax event="dragdrop"
+															listener="#{entreeBean.onDragDrop}"
+															update=":addform:addmsg" />
+														<p:treeNode>
+															<h:outputText value="#{prodNode}" />
+														</p:treeNode>
+													</p:tree>
+												</div>
+											</div>
+										</div>
+										<!-- Boutons -->
+										<p:commandButton value="#{msg['bnt.submit']}"
+											onclick="PF('achatProduit').show();"
+											action="#{entreeBean.creatPanierMap}"
+											update=":achatform:dialAcha"
+											styleClass="addBtn addBtn-success pull-left" />
+
+										<p:commandButton value="#{msg['bnt.reset']}"
+											action="#{entreeBean.reset()}"
+											styleClass="addBtn addBtn-success pull-right"
+											update="addform" process="@this" />
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Table -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-list"></i> #{msg['stock.table.panale']}
+								</h3>
+							</div>
+							<div class="panel-body">
+
+								<div class="row">
+									<div class="col-md-6 col-md-offset-3  col-centered">
+										<!-- Partie Tableau et Dialog -->
+										<h:form id="achatform">
+											<p:growl id="achatmsg" showDetail="true" sticky="false" />
+											<p:dialog header="#{msg['stock.sortie.nmbr.achat']}"
+												widgetVar="achatProduit" resizable="false" showEffect="clip"
+												hideEffect="clip" modal="true" styleClass="achatDialog">
+
+												<p:remoteCommand name="onCellEdit"
+													action="#{entreeBean.onCellEdit}" update=":achatform" />
+
+												<p:dataTable var="listMapPanier" widgetVar="cellVente"
+													value="#{entreeBean.panierMapList}" id="dialAcha"
+													style="width:300px;" editable="true" editMode="cell"
+													emptyMessage="#{msg['stock.sortie.panier.vide']}">
+
+													<p:ajax event="cellEdit" oncomplete="onCellEdit()" />
+
+													<p:column headerText="#{msg['stock.tab.col1']}">
+														<h:outputText value="#{listMapPanier.key.libelleProd}" />
+													</p:column>
+
+													<p:column headerText="#{msg['stock.tab.col5']}">
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{listMapPanier.value}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{listMapPanier.value}"
+																	label="#{msg['stock.tab.col1']}" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+												</p:dataTable>
+
+												<div class="col-xs-8 col-sm-6">
+													<!-- Gauche -->
+													#{msg['achat.total']}
+												</div>
+												<div class="col-xs-4 col-sm-6">
+													<!-- Droit -->
+													<h:outputText value="#{entreeBean.montTotale}" />
+												</div>
+
+												<p:commandButton value="#{msg['bnt.submit']}"
+													action="#{entreeBean.addCommande}" style="margin-top: 5px;"
+													update=":achatform:achatmsg"
+													styleClass="btn btn-primary btn-lg btn-block" />
+
+
+											</p:dialog>
+
+											<p:contextMenu for="dialAcha" widgetVar="cMenu">
+												<p:menuitem value="#{msg['context.menu.lig1']}"
+													icon="ui-icon-search"
+													onclick="PF('cellVente').showCellEditor();return false;" />
+												<p:menuitem value="#{msg['context.menu.lig2']}"
+													icon="ui-icon-close" onclick="PF('cMenu').hide()" />
+											</p:contextMenu>
+										</h:form>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Page Foot -->
+				<div class="row">
+					<div class="col-lg-12">
+						<ol class="breadcrumbPerso">
+							<li class="active"><i class="fa fa-copyright"></i> <strong>NGISLa
+									Groupe</strong> - #{msg['all.right.name']} .... @#{msg['all.right']}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:body>
+	<!-- Menu Déroulant Vertical -->
+	<div class="collapse navbar-collapse navbar-ex1-collapse">
+		<ul class="nav navbar-nav side-nav">
+
+			<!-- Tableau de bord -->
+			<li class="active"><h:link styleClass="dashIco"
+					value="#{msg['menu.home']}" outcome="/home" /></li>
+
+			<!-- Controle du role de l'utilisateur -->
+			<c:forEach items="#{connexionBean.crtUsRoles}" var="role">
+
+				<!-- Menu Role ADMIN-->
+				<c:if test="${role.nomRole == 'admin'}">
+					<li><a href="javascript:;" data-toggle="collapse"
+						data-target="#role"> <i class="fa fa-fw fa-arrows-v"></i>#{msg['menu.role']}<i
+							class="fa fa-fw fa-caret-down"></i>
+					</a>
+						<ul id="role" class="collapse">
+							<li><h:link value="#{msg['menu.role.crud']}"
+									outcome="/role/role" /></li>
+						</ul></li>
+				</c:if>
+
+				<!-- Menu User ADMIN-->
+				<c:if test="${role.nomRole == 'admin'}">
+					<li><a href="javascript:;" data-toggle="collapse"
+						data-target="#user"> <i class="fa fa-fw fa-arrows-v"></i>#{msg['menu.user']}<i
+							class="fa fa-fw fa-caret-down"></i>
+					</a>
+						<ul id="user" class="collapse">
+							<li><h:link value="#{msg['menu.user.crud']}"
+									outcome="/user/user" /></li>
+						</ul></li>
+				</c:if>
+
+				<!-- Menu Categorie ADMIN-->
+				<c:if test="${role.nomRole == 'admin'}">
+					<li><a href="javascript:;" data-toggle="collapse"
+						data-target="#cate"> <i class="fa fa-fw fa-arrows-v"></i>#{msg['menu.cat']}<i
+							class="fa fa-fw fa-caret-down"></i>
+					</a>
+						<ul id="cate" class="collapse">
+							<li><h:link value="#{msg['menu.cat.crud']}"
+									outcome="/categorie/categorie" /></li>
+						</ul></li>
+				</c:if>
+
+				<!-- Menu Produit ADMIN-->
+				<c:if test="${role.nomRole == 'admin'}">
+					<li><a href="javascript:;" data-toggle="collapse"
+						data-target="#prod"> <i class="fa fa-fw fa-arrows-v"></i>#{msg['menu.prod']}<i
+							class="fa fa-fw fa-caret-down"></i>
+					</a>
+						<ul id="prod" class="collapse">
+							<li><h:link value="#{msg['menu.prod.crud']}"
+									outcome="/produit/produit" /></li>
+						</ul></li>
+				</c:if>
+
+				<!-- Menu Stock ADMIN & USER-->
+				<c:if test="${role.nomRole == 'admin' || role.nomRole == 'user'}">
+					<li><a href="javascript:;" data-toggle="collapse"
+						data-target="#stock"> <i class="fa fa-fw fa-arrows-v"></i>#{msg['menu.stock']}<i
+							class="fa fa-fw fa-caret-down"></i>
+					</a>
+						<ul id="stock" class="collapse">
+							<li><h:link value="#{msg['menu.stock.entree']}"
+									outcome="/operations/entree" /></li>
+							<li><h:link value="#{msg['menu.stock.sortie']}"
+									outcome="/operations/sortie" /></li>
+							<li><h:link value="#{msg['menu.stock.etat']}"
+									outcome="/operations/etat" /></li>
+						</ul></li>
+				</c:if>
+
+				<!-- Menu Client ADMIN & USER-->
+				<c:if test="${role.nomRole == 'admin' || role.nomRole == 'user'}">
+					<li><a href="javascript:;" data-toggle="collapse"
+						data-target="#cli"> <i class="fa fa-fw fa-arrows-v"></i>#{msg['menu.client']}<i
+							class="fa fa-fw fa-caret-down"></i>
+					</a>
+						<ul id="cli" class="collapse">
+							<li><h:link value="#{msg['menu.client.crud']}"
+									outcome="/client/client" /></li>
+						</ul></li>
+				</c:if>
+
+				<!-- Menu Consultation ADMIN & USER-->
+				<c:if test="${role.nomRole == 'admin' || role.nomRole == 'user'}">
+					<li><a href="javascript:;" data-toggle="collapse"
+						data-target="#consul"> <i class="fa fa-fw fa-arrows-v"></i>#{msg['menu.consult']}<i
+							class="fa fa-fw fa-caret-down"></i>
+					</a>
+						<ul id="consul" class="collapse">
+							<li><h:link value="#{msg['menu.consult.prodrup']}"
+									outcome="/statistiques/ruptureStock" /></li>
+						</ul></li>
+				</c:if>
+
+				<!-- Menu Statistique ADMIN & USER-->
+				<c:if test="${role.nomRole == 'admin' || role.nomRole == 'user'}">
+					<li><a href="javascript:;" data-toggle="collapse"
+						data-target="#statisti"> <i class="fa fa-fw fa-arrows-v"></i>#{msg['menu.stat']}<i
+							class="fa fa-fw fa-caret-down"></i>
+					</a>
+						<ul id="statisti" class="collapse">
+							<li><h:link value="#{msg['menu.stat.nbprcat']}"
+									outcome="/statistiques/prodCategorie" /></li>
+						</ul></li>
+				</c:if>
+			</c:forEach>
+
+		</ul>
+	</div>
+</h:body>
+</html>

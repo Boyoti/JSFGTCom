@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="title">#{msg['login.titre']}</ui:insert></title>
+</h:head>
+
+<h:body>
+	<!-- Mes Fichiers CSS -->
+	<h:outputStylesheet name="css/bootstrap.min.css" />
+	<h:outputStylesheet name="css/sb-login.css" />
+	<h:outputStylesheet name="font-awesome/css/font-awesome.min.css" />
+	<!-- FIN Mes Fichiers CSS -->
+	
+	<f:view locale="#{langueBean.locale}">
+
+		<div id="wrapper">
+
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+				<ul class="nav navbar-right top-nav">
+					<h:form class="login-langue-form">
+						<h:commandLink action="#{langueBean.setFrancais()}"
+							style="margin-right: 5px;">
+							<h:graphicImage value="../resources/images/icofr.jpg" />
+						</h:commandLink>
+						<h:commandLink action="#{langueBean.setAnglais()}">
+							<h:graphicImage value="../resources/images/icoen.jpg" />
+						</h:commandLink>
+					</h:form>
+				</ul>
+			</nav>
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-4 col-md-offset-4">
+
+						<!-- Login Form -->
+						<h:form id="formlog" class="login-login-form">
+							<p:growl id="msgslog" showDetail="true" sticky="false" />
+							<h1>#{msg['login.bienvenu']}</h1>
+							<hr />
+
+							<div class="form-group">
+								<h:outputLabel for="login" value="#{msg['login.login']}"
+									styleClass="outputlabel" />
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="fa fa-envelope-o fa-fw"></i></span>
+										
+									<h:inputText id="login" value="#{connexionBean.login}"
+										styleClass="form-control" label="#{msg['login.login']}"
+										required="true"/>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<h:outputLabel for="password" value="#{msg['login.password']}"
+									styleClass="outputlabel" />
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="fa fa-key fa-fw"></i></span>
+									<p:password id="password" value="#{connexionBean.password}"
+										styleClass="form-control" label="#{msg['login.password']}"
+										required="true" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="input-group">
+									<h:panelGrid columns="2" columnClasses="clmSel, clmOut">
+										<p:selectBooleanCheckbox id="logincheckbox"
+											value="#{connexionBean.remeber}" />
+										<h:outputText for="logincheckbox"
+											value="#{msg['login.remeber']}" styleClass="outputlabel" />
+									</h:panelGrid>
+								</div>
+							</div>
+
+							<p:commandButton value="#{msg['bnt.submit']}"
+								action="#{connexionBean.connexion()}" update="msgslog"
+								styleClass="btn btn-success pull-left" />
+
+							<p:commandButton value="#{msg['bnt.reset']}"
+								action="#{connexionBean.reset()}"
+								styleClass="btn btn-success pull-right" update="formlog"
+								process="@this" />
+							<br />
+							<br />
+						</h:form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</f:view>
+</h:body>
+</html>

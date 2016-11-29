@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<h:form>
+		<!-- Home Coin Gauche -->
+		<div class="navbar-header">
+			<h:link styleClass="navbar-brand" value="#{msg['header.home']}"
+				outcome="/home" />
+		</div>
+
+		<!-- Menu Coin Droit -->
+		<ul class="nav navbar-right top-nav">
+
+			<!-- Messages -->
+			<li class="dropdown"><a href="#" class="dropdown-toggle"
+				data-toggle="dropdown"><i class="fa fa-envelope"></i> <b
+					class="caret"></b></a>
+				<ul class="dropdown-menu message-dropdown">
+					<li class="message-preview"><a href="#">
+							<div class="media">
+								<span class="pull-left"> <img class="media-object"
+									src="http://placehold.it/50x50" alt="" />
+								</span>
+								<div class="media-body">
+									<h5 class="media-heading">
+										<strong>John Smith</strong>
+									</h5>
+									<p class="small text-muted">
+										<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
+									</p>
+									<p>Lorem ipsum dolor sit amet, consectetur...</p>
+								</div>
+							</div>
+					</a></li>
+					<li class="message-footer"><a href="#">#{msg['lire.tout']}</a>
+					</li>
+				</ul></li>
+
+			<!-- Alerts -->
+			<li class="dropdown"><a href="#" class="dropdown-toggle"
+				data-toggle="dropdown"><i class="fa fa-bell"></i> <b
+					class="caret"></b></a>
+				<ul class="dropdown-menu alert-dropdown">
+					<li><a href="#">Alert Name <span
+							class="label label-success">Alert Badge</span></a></li>
+					<li><a href="#">Alert Name <span class="label label-info">Alert
+								Badge</span></a></li>
+					<li><a href="#">Alert Name <span
+							class="label label-warning">Alert Badge</span></a></li>
+					<li><a href="#">Alert Name <span
+							class="label label-danger">Alert Badge</span></a></li>
+					<li class="divider"></li>
+					<li><a href="#">#{msg['voir.tout']}</a></li>
+				</ul></li>
+
+			<!-- Langues -->
+			<li class="dropdown"><a href="#" class="dropdown-toggle"
+				data-toggle="dropdown"><i class="fa fa-language"></i><b
+					class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><h:commandLink styleClass="frIco"
+							action="#{langueBean.setFrancais}" value="FR" /></li>
+					<li><h:commandLink styleClass="enIco"
+							action="#{langueBean.setAnglais}" value="EN" /></li>
+				</ul></li>
+
+			<!-- Profiles -->
+			<li class="dropdown"><a href="#" class="dropdown-toggle"
+				data-toggle="dropdown"><i class="fa fa-user"></i>
+					#{connexionBean.curentUser.nomUser} <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><h:link styleClass="profilIco"
+							value="#{msg['header.profile.profile']}" outcome="/user/profil" />
+					</li>
+
+					<li><h:link styleClass="inboxIco"
+							value="#{msg['header.profile.inbox']}" outcome="/home" /></li>
+
+					<li><h:link styleClass="sttingsIco"
+							value="#{msg['header.profile.settings']}" outcome="/home" /></li>
+
+					<li class="divider"></li>
+
+					<li><h:commandLink styleClass="logoutIco"
+							action="#{connexionBean.deconnexion}"
+							value="#{msg['header.profile.deconnecter']}" /></li>
+				</ul></li>
+		</ul>
+	</h:form>
+</h:body>
+</html>
